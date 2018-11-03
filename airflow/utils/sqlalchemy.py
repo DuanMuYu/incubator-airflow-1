@@ -38,9 +38,9 @@ utc = pendulum.timezone('UTC')
 try:
     tz = conf.get("core", "default_timezone")
     if tz == "system":
-        TIMEZONE = pendulum.local_timezone()
+        utc = pendulum.local_timezone()
     else:
-        TIMEZONE = pendulum.timezone(tz)
+        utc = pendulum.timezone(tz)
 except Exception:
     pass
 
