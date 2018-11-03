@@ -32,10 +32,17 @@ from sqlalchemy import event, exc, select
 from sqlalchemy.types import DateTime, TypeDecorator
 
 from airflow.utils.log.logging_mixin import LoggingMixin
-
+from airflow import configuration as conf
 log = LoggingMixin().log
 utc = pendulum.timezone('UTC')
-
+try:
+    tz = conf.get("core", "default_timezone")
+    if tz == "system":
+        TIMEZONE = pendulum.local_timezone()
+    else:
+        TIMEZONE = pendulum.timezone(tz)
+except Exception:
+    pass
 
 def setup_event_handlers(engine,
                          reconnect_timeout_seconds,
